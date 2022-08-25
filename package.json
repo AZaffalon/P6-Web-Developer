@@ -1,0 +1,22 @@
+{
+  "name": "p6-web-developer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AZaffalon/P6-Web-Developer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AZaffalon/P6-Web-Developer/issues"
+  },
+  "homepage": "https://github.com/AZaffalon/P6-Web-Developer#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
