@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const mongooseConnectDB = require('./mongoose.db.js') ;
+const mongooseConnectDB = require('./mongoose.db.config.js') ;
 
 mongooseConnectDB();
 
