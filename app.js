@@ -1,9 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const mongooseConnectDB = require('./mongoose.db.js') ;
 
 mongooseConnectDB();
+
+app.use(cors());
 
 app.use((req, res, next) => {
   console.log('Requête reçue !');
