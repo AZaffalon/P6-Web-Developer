@@ -2,27 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-require('./config/db.config') ;
+const userRoutes = require('./routes/user');
+
+require('./config/db.config'); // Connection to mongoDB
 
 app.use(cors());
 
-app.use((req, res, next) => {
-  console.log('Requête reçue !');
-  next();
-});
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
-
-app.use((req, res, next) => {
-  res.json({ message: 'Votre requête a bien été reçue !' });
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log('Réponse envoyée avec succès !');
-});
+app.use('/api/auth', userRoutes); // login & signup routes for User
 
 module.exports = app;
