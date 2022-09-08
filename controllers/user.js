@@ -11,9 +11,12 @@ exports.signup = (req, res, next) => {
         email: req.body.email,
         password: hash
       });
-      user.save()
+      user.save({validateModifiedOnly: true})
         .then(() => res.status(201).json({message: 'Utilisateur créé'}))
         .catch(error => res.status(400).json({error}));
+        console.log("-------------------New user -------------------");
+        console.log(user);
+        console.log('------------------------------------------');
     })
     .catch(error => res.status(500).json({error}));
 };
