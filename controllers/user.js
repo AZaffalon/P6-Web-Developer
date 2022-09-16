@@ -30,7 +30,8 @@ exports.signup = (req, res, next) => {
       user.save()
         .then((userCreated) => res.status(201).json({
             message: 'User created', 
-            user: decrypt(userCreated.email)
+            user: decrypt(userCreated.email),
+            passwordComplexity: checkPasswordStrength(req.body.password)
           })
         )
         .catch(error => res.status(400).json({error}));
@@ -89,4 +90,42 @@ function decrypt(encrypted_string) {
 function validateEmail(val) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(val);
+}
+
+// Check password complexity
+function checkPasswordStrength(password) {
+  let strength = 0;
+
+  // contain at least 1 lowercase letter
+  if (password.match(/(?=.*[a-z])/)) {
+    strength += 1;
+  }
+
+  // contain at least 1 uppercase letter
+  if (password.match(/(?=.*[A-Z])/)) {
+    strength += 1;
+  }
+
+  // contain at least 1 number
+  if (password.match(/[0-9]+/)) {
+    strength += 1;
+  }
+
+  // contain at least 1 special character
+  if (password.match(/[$@#&!]+/)) {
+    strength += 1;
+  }
+  
+  // At least 8 characters long
+  if (password.length > 7) {
+    strength += 1;
+  }
+
+  if (strength < 4) {
+    return 'Password complexity is weak';
+  } else if (strength < 5){
+    return 'Password complexity is medium';
+  } else {
+    return 'Password complexity is strong';
+  }
 }
