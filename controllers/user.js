@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
     .then(hash => {
       // Test if email is valid
       if (!validateEmail(req.body.email)) {
-        return res.status(404).json({ message: 'Invalid Email !'});
+        return res.status(403).json({ message: 'Invalid Email !'});
       }
       const user = new User({
         email: cypherEmail,
