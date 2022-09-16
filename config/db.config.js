@@ -2,10 +2,16 @@ require("dotenv").config();
 
 const mongoose = require('mongoose');
 
-mongoose.connect(`${process.env.MONGO_URI}`,
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+const URI = process.env.MONGO_URI;
 
-module.exports = "db.config";
+// Store Connection Object
+const db = mongoose.connection;
+
+const config = { useNewUrlParser: true, useUnifiedTopology: true };
+
+mongoose.connect(URI, config);
+
+db.on("open", () => { console.log('Connexion à MongoDB réussie !'); })
+  .on("error", (err) => { console.log('Connexion à MongoDB échouée !'); });
+
+module.exports = db;
