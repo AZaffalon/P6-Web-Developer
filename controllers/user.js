@@ -21,10 +21,10 @@ exports.signup = (req, res, next) => {
     .then(hash => {
       // Test if email is valid
       if (!validateEmail(req.body.email)) {
-        return res.status(403).json({ message: 'Invalid Email !'});
+        return res.status(401).json({ message: 'Invalid Email !'});
       }
       if (!checkPasswordStrength(req.body.password)) {
-        return res.status(403).json({message: 'Password complexity is weak, please check that your password contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character and 8 characters'});
+        return res.status(401).json({message: 'Password complexity is weak, please check that your password contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character and 8 characters'});
       }
       const user = new User({
         email: cypherEmail,
