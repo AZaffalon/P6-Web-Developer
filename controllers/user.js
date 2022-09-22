@@ -16,25 +16,30 @@ const iv = process.env.CRYPTOJS_IV;
 // Signup logic  
 exports.signup = (req, res, next) => {
   const cypherEmail = encrypt(req.body.email);
-
+  // decrypt(userCreated.email);
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       // Test if email is valid
       if (!validateEmail(req.body.email)) {
         return res.status(403).json({ message: 'Invalid Email !'});
       }
+      if (!checkPasswordStrength(req.body.password)) {
+        return res.status(403).json({message: 'Password complexity is weak, please check that your password contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character and 8 characters'});
+      }
       const user = new User({
         email: cypherEmail,
         password: hash
       });
       user.save()
-        .then((userCreated) => res.status(201).json({
-            message: 'User created', 
-            user: decrypt(userCreated.email),
-            passwordComplexity: checkPasswordStrength(req.body.password)
-          })
-        )
-        .catch(error => res.status(400).json({error}));
+        .then((user) => {
+          user.email =decrypt(user.email);
+          res.status(201).json({
+            message: 'User created',
+            user: user
+          });
+        }
+      )
+      .catch(error => res.status(400).json({error}));
     })
     .catch(error => res.status(500).json({error}));
 };
@@ -51,8 +56,8 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res.status(401).json({ message: 'Invalid password !' });
           }
+          user.email = decrypt(user.email);
           res.status(200).json({
-            userId: user._id,
             user: user,
             token: jwt.sign(
               { userId: user._id },
@@ -122,10 +127,10 @@ function checkPasswordStrength(password) {
   }
 
   if (strength < 4) {
-    return 'Password complexity is weak';
+    return false;
   } else if (strength < 5){
-    return 'Password complexity is medium';
+    return true;
   } else {
-    return 'Password complexity is strong';
+    return true;
   }
 }
