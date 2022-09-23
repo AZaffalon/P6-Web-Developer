@@ -31,11 +31,11 @@ exports.signup = (req, res, next) => {
         password: hash
       });
       user.save()
-        .then((user) => {
-          user.email =decrypt(user.email);
+        .then((userCreated) => {
+          userCreated.email = decrypt(userCreated.email);
           res.status(201).json({
             message: 'User created',
-            user: user
+            user: userCreated
           });
         }
       )
