@@ -31,11 +31,11 @@ exports.signup = (req, res, next) => {
         password: hash
       });
       user.save()
-        .then((user) => {
-          user.email =decrypt(user.email);
+        .then((userCreated) => {
+          userCreated.email = decrypt(userCreated.email);
           res.status(201).json({
             message: 'User created',
-            user: user
+            user: userCreated
           });
         }
       )
@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
             user: user,
             token: jwt.sign(
               { userId: user._id },
-              `${process.env.JWT_TOKEN_SECRET}`,
+              process.env.JWT_TOKEN_SECRET,
               { expiresIn: '24h' } // l'utilisateur devra se reconnecter au bout de 24h
             )
           });
