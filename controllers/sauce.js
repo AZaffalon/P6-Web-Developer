@@ -31,12 +31,11 @@ exports.createSauce = (req, res, next) => {
     imageUrl: `/images/${req.file.filename}`
   });
   sauce.save()
-    .then(() => res.status(201).json({message: 'Sauce créée !'}))
+    .then(() => res.status(201).json({message: 'Sauce created !'}))
     .catch(error => res.status(401).json({error}));
 };
 
 // Update a sauce
-// TODO: test if this works
 exports.updateSauce = (req, res, next) => {
   const sauceObject = req.file ? {
     ...JSON.parse(req.body.sauce),
@@ -50,13 +49,19 @@ exports.updateSauce = (req, res, next) => {
             res.status(401).json({ message : 'Not authorized'});
         } else {
             Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
-            .then(() => res.status(200).json({message : 'Sauce modifié!'}))
+            .then(() => res.status(200).json({message : 'Sauce modified!'}))
             .catch(error => res.status(401).json({ error }));
         }
     })
     .catch((error) => {
         res.status(400).json({ error });
     });
+};
+
+exports.deleteSauce = (req, res, next) => {
+  Sauce.deleteOne({_id: req.params.id})
+    .then((deletedSauce) => res.status(200).json({message: 'Sauce deleted'}))
+    .catch(error => res.status(400).json({error}));
 };
 
 // Like or Dislike a sauce
@@ -71,7 +76,7 @@ exports.likeSauce = (req, res, next) => {
             $push:{usersLiked: req.auth.userId}
           };
           // if user already disliked the sauce
-          if(sauce.usersDisliked.includes(req.auth.userId)){ /// ? OK ? ///
+          if(sauce.usersDisliked.includes(req.auth.userId)){
             likeToSend = {
               $inc:{likes:1, dislikes:-1}, // increment
               $push:{usersLiked: req.auth.userId}, // append value
@@ -79,7 +84,7 @@ exports.likeSauce = (req, res, next) => {
             };
           }
           // if the user didn't put any like or dislike yet
-          if(!sauce.usersLiked.includes(req.auth.userId)) { /// ? OK ? ///
+          if(!sauce.usersLiked.includes(req.auth.userId)) {
             Sauce.findByIdAndUpdate({_id: req.params.id}, likeToSend, {new: true})
               .then(sauceUpdated => {
                 res.status(200).json(sauceUpdated);
@@ -99,7 +104,7 @@ exports.likeSauce = (req, res, next) => {
             $inc:{dislikes: -1},
             $pull:{usersDisliked: req.auth.userId},
           };
-          // User want to remove the like /// ? OK ? ///
+          // User want to remove the like
           if(sauce.usersLiked.includes(req.auth.userId)) {
             Sauce.findByIdAndUpdate({_id: req.params.id}, likeToRemove, {new: true})
               .then(sauceUpdated => {
@@ -129,7 +134,7 @@ exports.likeSauce = (req, res, next) => {
             $push:{usersDisliked: req.auth.userId}
           };
           // if user already liked the sauce
-          if(sauce.usersLiked.includes(req.auth.userId)){ /// ? OK ? ///
+          if(sauce.usersLiked.includes(req.auth.userId)){
             dislikeToSend = {
               $inc:{likes: -1, dislikes: 1},
               $push:{usersDisliked: req.auth.userId},
@@ -137,7 +142,7 @@ exports.likeSauce = (req, res, next) => {
             };
           }
           //if the user didn't put any like or dislike yet
-          if(!sauce.usersDisliked.includes(req.auth.userId)) { /// ? OK ? ///
+          if(!sauce.usersDisliked.includes(req.auth.userId)) {
             Sauce.findByIdAndUpdate({_id: req.params.id}, dislikeToSend, {new: true})
               .then(sauceUpdated => {
                 res.status(200).json(sauceUpdated);
