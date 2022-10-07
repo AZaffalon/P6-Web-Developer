@@ -16,7 +16,6 @@ const iv = process.env.CRYPTOJS_IV;
 // Signup logic  
 exports.signup = (req, res, next) => {
   const cypherEmail = encrypt(req.body.email);
-  // decrypt(userCreated.email);
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       // Test if email is valid
@@ -62,7 +61,7 @@ exports.login = (req, res, next) => {
             token: jwt.sign(
               { userId: user._id },
               process.env.JWT_TOKEN_SECRET,
-              { expiresIn: '24h' } // l'utilisateur devra se reconnecter au bout de 24h
+              { expiresIn: '24h' } // User must reconnect after 24h
             )
           });
         })
