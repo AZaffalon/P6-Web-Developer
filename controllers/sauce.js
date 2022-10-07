@@ -39,7 +39,7 @@ exports.createSauce = (req, res, next) => {
 // TODO: test if this works
 exports.updateSauce = (req, res, next) => {
   const sauceObject = req.file ? {
-    ...JSON.parse(req.body.thing),
+    ...JSON.parse(req.body.sauce),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   } : { ...req.body };
 
