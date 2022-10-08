@@ -1,4 +1,5 @@
 const Sauce = require('../models/sauce');
+const fs = require('fs');
 
 // Get all sauces
 exports.readAllSauces = (req, res, next) => {
@@ -59,8 +60,19 @@ exports.updateSauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
-  Sauce.deleteOne({_id: req.params.id})
-    .then((deletedSauce) => res.status(200).json({message: 'Sauce deleted'}))
+  Sauce.findOne({_id: req.params.id})
+    .then(sauce => {
+      if (sauce.userId != req.auth.userId) {
+        res.status(401).json({ message : 'Not authorized'});
+      } else {
+        const filename = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          Sauce.deleteOne({_id: req.params.id})
+          .then(() => res.status(200).json({message: 'Sauce deleted'}))
+          .catch(error => res.status(400).json({error}));
+        });
+      }
+    })
     .catch(error => res.status(400).json({error}));
 };
 
