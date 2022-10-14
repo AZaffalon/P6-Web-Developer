@@ -40,7 +40,7 @@ exports.createSauce = (req, res, next) => {
 exports.updateSauce = (req, res, next) => {
   const sauceObject = req.file ? {
     ...JSON.parse(req.body.sauce),
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    imageUrl: `/images/${req.file.filename}`
   } : { ...req.body };
 
   delete sauceObject._userId;
@@ -59,6 +59,7 @@ exports.updateSauce = (req, res, next) => {
     });
 };
 
+// Delete a sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then(sauce => {
