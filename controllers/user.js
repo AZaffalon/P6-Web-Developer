@@ -57,7 +57,7 @@ exports.login = (req, res, next) => {
           }
           user.email = decrypt(user.email);
           res.status(200).json({
-            user: user,
+            userId: user.id,
             token: jwt.sign(
               { userId: user._id },
               process.env.JWT_TOKEN_SECRET,
