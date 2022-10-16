@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const mongoSanitize = require('express-mongo-sanitize');
 const app = express();
 
 const path = require('path');
@@ -22,6 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+/**
+ * Prevent SQL injection by sanatizing the received data
+ */
+app.use(mongoSanitize());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes); // login & signup routes for User
