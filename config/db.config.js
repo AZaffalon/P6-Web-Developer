@@ -7,7 +7,7 @@ const URI = process.env.MONGO_URI;
 // Store Connection Object
 const db = mongoose.connection;
 
-const config = { useNewUrlParser: true, useUnifiedTopology: true };
+const config = { useNewUrlParser: true, useUnifiedTopology: true, ssl: true };
 
 mongoose.connect(URI, config);
 
