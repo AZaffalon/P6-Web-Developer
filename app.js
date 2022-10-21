@@ -2,25 +2,12 @@ const express = require('express');
 // Set various http headers to help secure the app
 const helmet = require("helmet");
 const cors = require('cors');
-/**
- * Allow CORS access only for 1 client (Frontend)
- */
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (process.env.WHITELIST.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-};
-
 const mongoSanitize = require('express-mongo-sanitize');
 // Limit number of request per window in a certain time
 const rateLimit = require('express-rate-limit');
 
 /**
- * Limiter number of requests for login and signup routes
+ * Limiter | number of requests for login and signup routes
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -30,11 +17,11 @@ const authLimiter = rateLimit({
 });
 
 /**
- * Limiter number of requests for all other routes of the project
+ * Limiter | number of requests for all other routes of the project
  */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 6 requests per `window` (here, per 15 minutes)
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
@@ -60,14 +47,24 @@ const sauceRoutes = require('./routes/sauce');
 
 require('./config/db.config'); // Connection to mongoDB
 
-app.use(cors(corsOptions));
+app.use(cors());
 
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+/**
+ * Log Database
+ * ! TO BE FINISHED !
+ */
+// var bunyan = require('bunyan');
+// var log = bunyan.createLogger({name: "myapp"});
+// log.info("hi");
 
 /**
  * Prevent SQL injection by sanatizing the received data
