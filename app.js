@@ -61,14 +61,6 @@ app.use(express.urlencoded({
 }));
 
 /**
- * Log Database
- * ! TO BE FINISHED !
- */
-// var bunyan = require('bunyan');
-// var log = bunyan.createLogger({name: "myapp"});
-// log.info("hi");
-
-/**
  * To add hateoas links to our methods
  */
 app.use(hateoasLinker);
