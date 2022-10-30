@@ -42,6 +42,8 @@ const app = express();
 
 const path = require('path');
 
+const hateoasLinker = require("express-hateoas-links");
+
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
@@ -65,6 +67,11 @@ app.use(express.urlencoded({
 // var bunyan = require('bunyan');
 // var log = bunyan.createLogger({name: "myapp"});
 // log.info("hi");
+
+/**
+ * To add hateoas links to our methods
+ */
+app.use(hateoasLinker);
 
 /**
  * Prevent SQL injection by sanatizing the received data
