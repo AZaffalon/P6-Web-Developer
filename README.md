@@ -1,6 +1,8 @@
 # P6-Web-Developer
 
 API sécurisée pour une application d'avis gastronomiques.
+
+![alt text](https://user.oc-static.com/upload/2021/07/29/16275605596354_PiiquanteLogo.png)
 ## 👉 Requirements
 
 Minimum version to install in the root of the project
@@ -20,7 +22,9 @@ git clone https://github.com/AZaffalon/P6-Web-Developer.git
 
 ▶️ Create a **.env** file
 
-▶️ Copy/paste the **.env.example** content inside and put your on own credentials (⚠️ except for SERVER_PORT that should be <ins>**3000**</ins>)
+▶️ Copy/paste the <ins>**.env.example**</ins> content inside your <ins>**.env**</ins> file and put your on own credentials 
+
+(⚠️ except for SERVER_PORT that should be <ins>**3000**</ins>)
 
 ```
 MONGO_URI = ""
@@ -38,3 +42,7 @@ SERVER_PORT = "3000"
 Run `nodemon server` or `nodemon`
 
 > ⚠️ Server should run on localhost:3000
+
+## 👉 Setup Front-end
+
+For the front-end, please check the repository at this [link](https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6/blob/master/README.md)
