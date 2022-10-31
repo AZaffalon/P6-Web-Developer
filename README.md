@@ -16,6 +16,10 @@ Minimum version to install in the root of the project
 ```
 git clone https://github.com/AZaffalon/P6-Web-Developer.git
 ```
+▶️ Move to the folder 
+``` 
+cd P6-Web-Developer 
+```
 ▶️ Run `npm install` in the root of your folder
 
 > ⚠️ Be sure to have installed the minimum version of npm and node
