@@ -10,6 +10,7 @@ const db = mongoose.connection;
 
 const config = { useNewUrlParser: true, useUnifiedTopology: true, ssl: true };
 
+// Log of DB query and error in console
 const log = bunyan.createLogger({
   name: "MongoDB Driver",
   serializers: {
@@ -30,13 +31,14 @@ const log = bunyan.createLogger({
     },
     {
       type: "rotating-file",
-      path: "./logs/mongodb.log",
-      period: "1d", // daily rotation
-      count: 3, // keep 3 back copies
+      path: "./logs/mongodb.log", // Keep logs in this path
+      period: "1d", // Daily rotation
+      count: 3, // Keep 3 back copies
     },
   ],
 });
 
+// Return JSON objects from Javascript objects
 function serializer(data) {
   let query = JSON.stringify(data.query);
   let options = JSON.stringify(data.options || {});
